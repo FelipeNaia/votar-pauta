@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/carga-inicial.sql
+  - include:
+      file: db/changelog/criacao-sequencias.sql
+  - include:
+      file: db/changelog/incluindo-fk.sql
