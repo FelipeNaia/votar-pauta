@@ -30,7 +30,7 @@ public class TestAPI {
 
     @GetMapping("/{msg}")
     public String post(@PathVariable String msg) {
-        ListenableFuture<SendResult<String, String>> topicName = kafkaTemplate.send("foo", msg);
+        ListenableFuture<SendResult<String, String>> topicName = kafkaTemplate.send("test", msg);
 
         topicName.addCallback(new ListenableFutureCallback<>() {
             @Override

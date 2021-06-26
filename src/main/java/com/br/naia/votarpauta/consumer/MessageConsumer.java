@@ -10,7 +10,7 @@ public class MessageConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(MessageConsumer.class);
 
-    @KafkaListener(topics = "foo", groupId = "foo")
+    @KafkaListener(topics = "test", containerFactory = "votarPautaKafkaListenerContainerFactory")
     public void listenGroupFoo(String message) {
         log.info(String.format("Received Message in group foo: %s", message));
     }
