@@ -1,4 +1,4 @@
-package com.br.naia.votarpauta.entrypoint;
+package com.br.naia.votarpauta.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +16,9 @@ import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/test")
-public class TestAPI {
+public class TestController {
 
-    private static final Logger log = LoggerFactory.getLogger(TestAPI.class);
+    private static final Logger log = LoggerFactory.getLogger(TestController.class);
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
