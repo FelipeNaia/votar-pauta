@@ -1,5 +1,6 @@
 package com.br.naia.votarpauta.entity;
 
+import com.br.naia.votarpauta.enumeration.VotoValor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,10 @@ public class Voto {
     @Column(name = "VO_CPF")
     private String cpf;
 
-    @Column(name = "VO_VALOR", length = 11)
+    @Column(name = "VO_VALOR", length = 64)
     private VotoValor votoValor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PA_ID", referencedColumnName = "PA_ID")
     private Pauta pauta;
-
-    public enum VotoValor{
-        SIM, NAO
-    }
 }

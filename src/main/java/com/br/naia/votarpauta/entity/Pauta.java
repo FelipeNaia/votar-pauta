@@ -1,6 +1,8 @@
 package com.br.naia.votarpauta.entity;
 
+import com.br.naia.votarpauta.enumeration.PautaStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "PAUTA", schema = "VOTAR_PAUTA")
@@ -24,8 +27,8 @@ public class Pauta {
     @Column(name = "pa_nome")
     private String nome;
 
-    @Column(name = "pa_status", length = 11)
-    private String status;
+    @Column(name = "pa_status", length = 64)
+    private PautaStatus status;
 
     @Column(name = "pa_votos_sim")
     private Long votosSim;
@@ -42,9 +45,4 @@ public class Pauta {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "Voto")
     private List<Voto> votos;
 
-    public enum PautaStatus{
-        NOVA,
-        ABERTA,
-        FECHADA
-    }
 }
