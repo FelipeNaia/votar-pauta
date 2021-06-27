@@ -42,7 +42,7 @@ public class Pauta {
     @Column(name = "pa_fechamento")
     private LocalDateTime fechamento;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Voto")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pauta")
     private List<Voto> votos;
 
 }

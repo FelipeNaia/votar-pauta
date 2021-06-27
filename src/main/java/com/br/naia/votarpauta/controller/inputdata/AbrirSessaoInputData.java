@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CadastrarPautaInputData {
-    private String nome;
+public class AbrirSessaoInputData {
+    private Long tempoEmMinutos;
+    private Long pautaId;
 }
