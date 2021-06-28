@@ -2,6 +2,7 @@ package com.br.naia.votarpauta.entity;
 
 import com.br.naia.votarpauta.constants.VotoValor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "VOTO", schema = "VOTAR_PAUTA")
