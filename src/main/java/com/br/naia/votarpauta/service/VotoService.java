@@ -28,7 +28,7 @@ public class VotoService {
     }
 
     public Long contabilizarVotosNao(Long pautaId) {
-        return votoRepository.countAllByPauta_IdAndVotoValor(pautaId, VotoValor.SIM);
+        return votoRepository.countAllByPauta_IdAndVotoValor(pautaId, VotoValor.NAO);
     }
 
     public void votar(VotarInputData votarInputData) {
