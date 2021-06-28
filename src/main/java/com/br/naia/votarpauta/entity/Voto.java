@@ -1,6 +1,6 @@
 package com.br.naia.votarpauta.entity;
 
-import com.br.naia.votarpauta.enumeration.VotoValor;
+import com.br.naia.votarpauta.constants.VotoValor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,7 @@ public class Voto {
     @Column(name = "VO_CPF")
     private String cpf;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "VO_VALOR", length = 64)
     private VotoValor votoValor;
 

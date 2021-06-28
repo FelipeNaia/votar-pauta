@@ -1,19 +1,20 @@
 package com.br.naia.votarpauta.service;
 
-import com.br.naia.votarpauta.PautaRepository;
 import com.br.naia.votarpauta.controller.inputdata.AbrirSessaoInputData;
 import com.br.naia.votarpauta.controller.inputdata.CadastrarPautaInputData;
 import com.br.naia.votarpauta.dto.PautaDTO;
 import com.br.naia.votarpauta.entity.Pauta;
-import com.br.naia.votarpauta.enumeration.PautaStatus;
+import com.br.naia.votarpauta.constants.PautaStatus;
 import com.br.naia.votarpauta.exception.PautaNaoEncontradaException;
+import com.br.naia.votarpauta.repository.PautaRepository;
+import com.br.naia.votarpauta.topic.PublicarResultadoDaPautaTopic;
 import com.br.naia.votarpauta.translator.PautaTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -24,6 +25,12 @@ public class PautaService {
 
     @Autowired
     private PautaTranslator pautaTranslator;
+
+    @Autowired
+    private PublicarResultadoDaPautaTopic encerrarPautaTopic;
+
+    @Autowired
+    private VotoService votoService;
 
     public PautaDTO cadastrar(CadastrarPautaInputData cadastrarPautaInputData) {
         validarDadosDeCadastro(cadastrarPautaInputData);
@@ -47,6 +54,20 @@ public class PautaService {
         pauta.setStatus(PautaStatus.ABERTA);
 
         return pautaTranslator.toDto(pautaRepository.save(pauta));
+    }
+
+    public void fecharPautas() {
+        List<Pauta> pautasParaFechar = pautaRepository.findAllByFechamentoBeforeAndStatus(LocalDateTime.now(), PautaStatus.ABERTA);
+
+        pautasParaFechar.forEach(pauta -> {
+            pauta.setStatus(PautaStatus.FECHADA);
+            pauta.setVotosSim(votoService.contabilizarVotosSim(pauta.getId()));
+            pauta.setVotosNao(votoService.contabilizarVotosNao(pauta.getId()));
+
+            pautaRepository.save(pauta);
+
+            encerrarPautaTopic.send(String.format("%s teve %d votos Sim e %d votos Não", pauta.getNome(), pauta.getVotosSim(), pauta.getVotosNao()));
+        });
     }
 
     private void validarPautaParaAbertura(Pauta pauta) {

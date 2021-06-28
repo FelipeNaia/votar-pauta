@@ -1,6 +1,6 @@
 package com.br.naia.votarpauta.dto;
 
-import com.br.naia.votarpauta.enumeration.VotoValor;
+import com.br.naia.votarpauta.constants.VotoValor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

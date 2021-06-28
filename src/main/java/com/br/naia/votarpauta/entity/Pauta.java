@@ -1,6 +1,6 @@
 package com.br.naia.votarpauta.entity;
 
-import com.br.naia.votarpauta.enumeration.PautaStatus;
+import com.br.naia.votarpauta.constants.PautaStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +27,7 @@ public class Pauta {
     @Column(name = "pa_nome")
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "pa_status", length = 64)
     private PautaStatus status;
 
