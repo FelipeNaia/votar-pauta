@@ -37,7 +37,5 @@ body: {
 ====================================================================================================================
 
 O que ainda falta implementar:
-- Testes unitários
-- Não permitir o mesmo CPF ser usado para votar duas vezes
-- Validação do CPF pela api user-info do Heroku
+- Mais testes unitários
 - Versionamento da api

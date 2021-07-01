@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VotoRepository extends JpaRepository<Voto, Long> {
     Long countAllByPauta_IdAndVotoValor(Long pautaID, VotoValor valor);
+    Boolean existsByPauta_IdAndCpf(Long pautaID, String cpf);
 }

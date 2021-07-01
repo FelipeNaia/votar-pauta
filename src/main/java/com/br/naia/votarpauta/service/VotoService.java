@@ -6,6 +6,7 @@ import com.br.naia.votarpauta.controller.inputdata.VotarInputData;
 import com.br.naia.votarpauta.entity.Pauta;
 import com.br.naia.votarpauta.entity.Voto;
 import com.br.naia.votarpauta.exception.PautaNaoEncontradaException;
+import com.br.naia.votarpauta.integration.userinfo.UserInfoIntegration;
 import com.br.naia.votarpauta.repository.PautaRepository;
 import com.br.naia.votarpauta.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class VotoService {
     @Autowired
     private PautaRepository pautaRepository;
 
+    @Autowired
+    private UserInfoIntegration userInfoIntegration;
+
     public Long contabilizarVotosSim(Long pautaId) {
         return votoRepository.countAllByPauta_IdAndVotoValor(pautaId, VotoValor.SIM);
     }
@@ -35,6 +39,7 @@ public class VotoService {
         Pauta pauta = pautaRepository.findById(votarInputData.getPautaId()).orElseThrow(PautaNaoEncontradaException::new);
 
         validarPautaParaVotar(pauta);
+        validarVoto(votarInputData);
 
         Voto voto = Voto.builder()
                 .votoValor(votarInputData.getVotoValor())
@@ -43,6 +48,12 @@ public class VotoService {
                 .build();
 
         votoRepository.save(voto);
+    }
+
+    private void validarVoto(VotarInputData votarInputData) {
+        votarInputData.setCpf(votarInputData.getCpf().replaceAll("[^0-9]",""));
+        Assert.isTrue(!votoRepository.existsByPauta_IdAndCpf(votarInputData.getPautaId(), votarInputData.getCpf()), "Este CPJ já foi usado para votar nesta pauta!");
+        userInfoIntegration.validarCPF(votarInputData.getCpf());
     }
 
     private void validarPautaParaVotar(Pauta pauta) {
