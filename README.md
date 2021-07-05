@@ -26,7 +26,7 @@ body: {
 }
 
 Para votar: 
-POST em localhost:8081/voto
+PUT em localhost:8081/voto
 body: {
 	"cpf": "123456789",
 	"votoValor": "SIM/NAO",

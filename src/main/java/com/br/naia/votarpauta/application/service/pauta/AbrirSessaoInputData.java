@@ -1,4 +1,4 @@
-package com.br.naia.votarpauta.controller.inputdata;
+package com.br.naia.votarpauta.application.service.pauta;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

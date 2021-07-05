@@ -1,14 +1,12 @@
 package com.br.naia.votarpauta.application.service.pauta;
 
 import com.br.naia.votarpauta.application.service.voto.VotoService;
-import com.br.naia.votarpauta.controller.inputdata.AbrirSessaoInputData;
-import com.br.naia.votarpauta.controller.inputdata.CadastrarPautaInputData;
 import com.br.naia.votarpauta.domain.pauta.PautaDTO;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
 import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import com.br.naia.votarpauta.application.exception.PautaNaoEncontradaException;
 import com.br.naia.votarpauta.domain.pauta.PautaRepository;
-import com.br.naia.votarpauta.application.kafka.topic.PublicarResultadoDaPautaTopic;
+import com.br.naia.votarpauta.application.kafka.sender.PublicarResultadoDaPautaTopicSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -24,7 +22,7 @@ public class PautaService {
     private PautaRepository pautaRepository;
 
     @Autowired
-    private PublicarResultadoDaPautaTopic encerrarPautaTopic;
+    private PublicarResultadoDaPautaTopicSender encerrarPautaTopic;
 
     @Autowired
     private VotoService votoService;
@@ -41,7 +39,8 @@ public class PautaService {
     }
 
     public PautaDTO abrirSessao(AbrirSessaoInputData abrirSessaoInputData) {
-        Pauta pauta = pautaRepository.findById(abrirSessaoInputData.getPautaId()).orElseThrow(PautaNaoEncontradaException::new);
+        Pauta pauta = pautaRepository.findById(abrirSessaoInputData.getPautaId())
+                .orElseThrow(() -> new PautaNaoEncontradaException(String.format("A pauta id: %d não foi encontrada", abrirSessaoInputData.getPautaId())));
         long tempoEmMinutos = Objects.isNull(abrirSessaoInputData.getTempoEmMinutos()) ? 1 : abrirSessaoInputData.getTempoEmMinutos();
 
         validarPautaParaAbertura(pauta);

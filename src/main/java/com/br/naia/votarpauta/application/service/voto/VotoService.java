@@ -2,7 +2,6 @@ package com.br.naia.votarpauta.application.service.voto;
 
 import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import com.br.naia.votarpauta.domain.voto.VotoValor;
-import com.br.naia.votarpauta.controller.inputdata.VotarInputData;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
 import com.br.naia.votarpauta.domain.voto.Voto;
 import com.br.naia.votarpauta.application.exception.PautaNaoEncontradaException;
@@ -36,7 +35,8 @@ public class VotoService {
     }
 
     public void votar(VotarInputData votarInputData) {
-        Pauta pauta = pautaRepository.findById(votarInputData.getPautaId()).orElseThrow(PautaNaoEncontradaException::new);
+        Pauta pauta = pautaRepository.findById(votarInputData.getPautaId())
+                .orElseThrow(() -> new PautaNaoEncontradaException(String.format("A pauta id: %d não foi encontrada", votarInputData.getPautaId())));
 
         validarPautaParaVotar(pauta);
         validarVoto(votarInputData);

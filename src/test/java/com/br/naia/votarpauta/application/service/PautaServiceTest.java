@@ -3,11 +3,11 @@ package com.br.naia.votarpauta.application.service;
 import com.br.naia.votarpauta.application.service.pauta.PautaService;
 import com.br.naia.votarpauta.application.service.voto.VotoService;
 import com.br.naia.votarpauta.domain.pauta.PautaStatus;
-import com.br.naia.votarpauta.controller.inputdata.AbrirSessaoInputData;
-import com.br.naia.votarpauta.controller.inputdata.CadastrarPautaInputData;
+import com.br.naia.votarpauta.application.service.pauta.AbrirSessaoInputData;
+import com.br.naia.votarpauta.application.service.pauta.CadastrarPautaInputData;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
 import com.br.naia.votarpauta.domain.pauta.PautaRepository;
-import com.br.naia.votarpauta.application.kafka.topic.PublicarResultadoDaPautaTopic;
+import com.br.naia.votarpauta.application.kafka.sender.PublicarResultadoDaPautaTopicSender;
 import com.br.naia.votarpauta.application.service.pauta.PautaDtoTranslator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class PautaServiceTest {
     private PautaDtoTranslator pautaDtoTranslator;
 
     @Mock
-    private PublicarResultadoDaPautaTopic encerrarPautaTopic;
+    private PublicarResultadoDaPautaTopicSender encerrarPautaTopic;
 
     @Mock
     private VotoService votoService;

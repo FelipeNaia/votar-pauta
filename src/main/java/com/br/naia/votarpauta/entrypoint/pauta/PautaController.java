@@ -1,19 +1,15 @@
 package com.br.naia.votarpauta.entrypoint.pauta;
 
-import com.br.naia.votarpauta.controller.inputdata.AbrirSessaoInputData;
-import com.br.naia.votarpauta.controller.inputdata.CadastrarPautaInputData;
+import com.br.naia.votarpauta.application.service.pauta.AbrirSessaoInputData;
+import com.br.naia.votarpauta.application.service.pauta.CadastrarPautaInputData;
 import com.br.naia.votarpauta.domain.pauta.PautaDTO;
 import com.br.naia.votarpauta.application.service.pauta.PautaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pauta")
 public class PautaController {
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private PautaService pautaService;
 
