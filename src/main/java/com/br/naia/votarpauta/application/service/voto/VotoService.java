@@ -1,5 +1,7 @@
 package com.br.naia.votarpauta.application.service.voto;
 
+import com.br.naia.votarpauta.application.exception.CpfJaVotouException;
+import com.br.naia.votarpauta.application.exception.PautaNaoEstaAbertaParaVotoException;
 import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import com.br.naia.votarpauta.domain.voto.VotoValor;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
@@ -52,13 +54,17 @@ public class VotoService {
 
     private void validarVoto(VotarInputData votarInputData) {
         votarInputData.setCpf(votarInputData.getCpf().replaceAll("[^0-9]",""));
-        Assert.isTrue(!votoRepository.existsByPauta_IdAndCpf(votarInputData.getPautaId(), votarInputData.getCpf()), "Este CPJ já foi usado para votar nesta pauta!");
+
+        if (votoRepository.existsByPauta_IdAndCpf(votarInputData.getPautaId(), votarInputData.getCpf())) {
+            throw new CpfJaVotouException("Este CPJ já foi usado para votar nesta pauta!");
+        }
+
         userInfoIntegration.validarCPF(votarInputData.getCpf());
     }
 
     private void validarPautaParaVotar(Pauta pauta) {
-        String deveEstarAberta = "Só é possível votar numa pauta aberta";
-        Assert.isTrue(pauta.getStatus().equals(PautaStatus.ABERTA), deveEstarAberta);
-        Assert.isTrue(LocalDateTime.now().isBefore(pauta.getFechamento()), deveEstarAberta);
+        if (!pauta.getStatus().equals(PautaStatus.ABERTA) || LocalDateTime.now().isAfter(pauta.getFechamento())) {
+            throw new PautaNaoEstaAbertaParaVotoException("Só é possível votar numa pauta aberta");
+        }
     }
 }

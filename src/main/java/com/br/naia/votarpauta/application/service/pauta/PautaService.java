@@ -1,5 +1,6 @@
 package com.br.naia.votarpauta.application.service.pauta;
 
+import com.br.naia.votarpauta.application.exception.PautaNaoEhNovaException;
 import com.br.naia.votarpauta.application.service.voto.VotoService;
 import com.br.naia.votarpauta.domain.pauta.PautaDTO;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
@@ -67,7 +68,9 @@ public class PautaService {
     }
 
     private void validarPautaParaAbertura(Pauta pauta) {
-        Assert.isTrue(pauta.getStatus().equals(PautaStatus.NOVA), "Só é possível a abertura de uma pauta nova");
+        if(!pauta.getStatus().equals(PautaStatus.NOVA)) {
+            throw new PautaNaoEhNovaException("Só é possível a abertura de uma pauta nova");
+        }
     }
 
     private void validarDadosDeCadastro(CadastrarPautaInputData cadastrarPautaInputData) {

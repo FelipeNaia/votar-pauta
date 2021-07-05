@@ -1,5 +1,6 @@
 package com.br.naia.votarpauta.application.service;
 
+import com.br.naia.votarpauta.application.exception.PautaNaoEhNovaException;
 import com.br.naia.votarpauta.application.service.pauta.PautaService;
 import com.br.naia.votarpauta.application.service.voto.VotoService;
 import com.br.naia.votarpauta.domain.pauta.PautaStatus;
@@ -97,7 +98,7 @@ public class PautaServiceTest {
                 .status(PautaStatus.ABERTA)
                 .build()));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> pautaService.abrirSessao(abrirSessaoInputData));
+        Assertions.assertThrows(PautaNaoEhNovaException.class, () -> pautaService.abrirSessao(abrirSessaoInputData));
     }
 
     @Test
