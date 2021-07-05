@@ -1,6 +1,5 @@
-package com.br.naia.votarpauta.controller.inputdata;
+package com.br.naia.votarpauta.domain.voto;
 
-import com.br.naia.votarpauta.domain.voto.VotoValor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VotarInputData {
-    private Long pautaId;
+public class VotoDTO {
+    private Long id;
     private String cpf;
     private VotoValor votoValor;
 }
