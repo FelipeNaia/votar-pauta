@@ -1,18 +1,17 @@
 package com.br.naia.votarpauta.application.service.voto;
 
 import com.br.naia.votarpauta.application.exception.CpfJaVotouException;
-import com.br.naia.votarpauta.application.exception.PautaNaoEstaAbertaParaVotoException;
-import com.br.naia.votarpauta.domain.pauta.PautaStatus;
-import com.br.naia.votarpauta.domain.voto.VotoValor;
-import com.br.naia.votarpauta.domain.pauta.Pauta;
-import com.br.naia.votarpauta.domain.voto.Voto;
 import com.br.naia.votarpauta.application.exception.PautaNaoEncontradaException;
+import com.br.naia.votarpauta.application.exception.PautaNaoEstaAbertaParaVotoException;
 import com.br.naia.votarpauta.application.integration.userinfo.UserInfoIntegration;
+import com.br.naia.votarpauta.domain.pauta.Pauta;
 import com.br.naia.votarpauta.domain.pauta.PautaRepository;
+import com.br.naia.votarpauta.domain.pauta.PautaStatus;
+import com.br.naia.votarpauta.domain.voto.Voto;
 import com.br.naia.votarpauta.domain.voto.VotoRepository;
+import com.br.naia.votarpauta.domain.voto.VotoValor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 

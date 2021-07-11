@@ -1,5 +1,6 @@
 package com.br.naia.votarpauta.application.service.pauta;
 
+import com.br.naia.votarpauta.application.exception.DadosDeCadastroInvalidosException;
 import com.br.naia.votarpauta.application.exception.PautaNaoEhNovaException;
 import com.br.naia.votarpauta.application.service.voto.VotoService;
 import com.br.naia.votarpauta.domain.pauta.PautaDTO;
@@ -12,9 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PautaService {
@@ -27,6 +32,9 @@ public class PautaService {
 
     @Autowired
     private VotoService votoService;
+
+    @Autowired
+    private Validator validator;
 
     public PautaDTO cadastrar(CadastrarPautaInputData cadastrarPautaInputData) {
         validarDadosDeCadastro(cadastrarPautaInputData);
@@ -74,6 +82,10 @@ public class PautaService {
     }
 
     private void validarDadosDeCadastro(CadastrarPautaInputData cadastrarPautaInputData) {
-        Assert.notNull(cadastrarPautaInputData.getNome(), "O nome da pauta deve ser informado");
+        Set<ConstraintViolation<CadastrarPautaInputData>> violations = validator.validate(cadastrarPautaInputData);
+        if(!violations.isEmpty()) {
+            String mensagensDeErro = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", "));
+            throw new DadosDeCadastroInvalidosException(mensagensDeErro);
+        }
     }
 }

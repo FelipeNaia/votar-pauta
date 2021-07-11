@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,9 @@ public class PautaServiceTest {
     @Mock
     private VotoService votoService;
 
+    @Mock
+    private Validator validator;
+
     @InjectMocks
     private PautaService pautaService;
 
@@ -53,6 +57,7 @@ public class PautaServiceTest {
         String NOME_DA_PAUTA = "Nome da pauta";
         CadastrarPautaInputData cadastrarPautaInputData = mock(CadastrarPautaInputData.class);
         when(cadastrarPautaInputData.getNome()).thenReturn(NOME_DA_PAUTA);
+        when(pautaRepository.save(any(Pauta.class))).thenReturn(new Pauta());
 
         pautaService.cadastrar(cadastrarPautaInputData);
 
@@ -74,6 +79,7 @@ public class PautaServiceTest {
         AbrirSessaoInputData abrirSessaoInputData = mock(AbrirSessaoInputData.class);
         when(abrirSessaoInputData.getTempoEmMinutos()).thenReturn(null);
         when(abrirSessaoInputData.getPautaId()).thenReturn(1L);
+        when(pautaRepository.save(any(Pauta.class))).thenReturn(new Pauta());
         when(pautaRepository.findById(1L)).thenReturn(Optional.of(
                 Pauta.builder()
                 .status(PautaStatus.NOVA)
