@@ -1,6 +1,5 @@
 package com.br.naia.votarpauta.application.integration.userinfo;
 
-import com.br.naia.votarpauta.application.exception.CpfJaVotouException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -24,12 +23,9 @@ public class UserInfoIntegration {
                 .build();
     }
 
-    public void validarCPF(String cpf) {
+    public Boolean cpfEhValido(String cpf) {
         UserInfoResponse userInfoResponse = restTemplate.getForObject(USER_INFO_URL + cpf, UserInfoResponse.class);
-
-        if(Objects.isNull(userInfoResponse) || UserInfoResponse.UserInfoStatus.UNABLE_TO_VOTE.equals(userInfoResponse.getStatus())) {
-            throw new CpfJaVotouException(String.format("O CPF %s não pode ser usado para votar", cpf));
-        }
+        return Objects.nonNull(userInfoResponse) && UserInfoResponse.UserInfoStatus.ABLE_TO_VOTE.equals(userInfoResponse.getStatus());
     }
 
 }

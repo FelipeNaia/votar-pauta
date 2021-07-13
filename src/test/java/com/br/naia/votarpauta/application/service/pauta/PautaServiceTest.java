@@ -1,15 +1,12 @@
-package com.br.naia.votarpauta.application.service;
+package com.br.naia.votarpauta.application.service.pauta;
 
+import com.br.naia.votarpauta.application.exception.DadosDeCadastroInvalidosException;
 import com.br.naia.votarpauta.application.exception.PautaNaoEhNovaException;
-import com.br.naia.votarpauta.application.service.pauta.PautaService;
+import com.br.naia.votarpauta.application.kafka.sender.PublicarResultadoDaPautaTopicSender;
 import com.br.naia.votarpauta.application.service.voto.VotoService;
-import com.br.naia.votarpauta.domain.pauta.PautaStatus;
-import com.br.naia.votarpauta.application.service.pauta.AbrirSessaoInputData;
-import com.br.naia.votarpauta.application.service.pauta.CadastrarPautaInputData;
 import com.br.naia.votarpauta.domain.pauta.Pauta;
 import com.br.naia.votarpauta.domain.pauta.PautaRepository;
-import com.br.naia.votarpauta.application.kafka.sender.PublicarResultadoDaPautaTopicSender;
-import com.br.naia.votarpauta.application.service.pauta.PautaDtoTranslator;
+import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,13 +16,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.br.naia.votarpauta.domain.pauta.PautaStatus.ABERTA;
 import static com.br.naia.votarpauta.domain.pauta.PautaStatus.FECHADA;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +46,9 @@ public class PautaServiceTest {
     @Mock
     private Validator validator;
 
+    @Mock
+    private Set<ConstraintViolation<CadastrarPautaInputData>> constraintViolationSet;
+
     @InjectMocks
     private PautaService pautaService;
 
@@ -58,6 +61,8 @@ public class PautaServiceTest {
         CadastrarPautaInputData cadastrarPautaInputData = mock(CadastrarPautaInputData.class);
         when(cadastrarPautaInputData.getNome()).thenReturn(NOME_DA_PAUTA);
         when(pautaRepository.save(any(Pauta.class))).thenReturn(new Pauta());
+        when(constraintViolationSet.isEmpty()).thenReturn(true);
+        when(validator.validate(cadastrarPautaInputData)).thenReturn(constraintViolationSet);
 
         pautaService.cadastrar(cadastrarPautaInputData);
 
@@ -65,13 +70,15 @@ public class PautaServiceTest {
 
         Pauta pautaSalva = pautaArgumentCaptor.getValue();
 
-        Assertions.assertEquals(NOME_DA_PAUTA, pautaSalva.getNome());
+        assertEquals(NOME_DA_PAUTA, pautaSalva.getNome());
     }
 
     @Test
     void deveLancarErroAoCadastrarSemNome() {
         CadastrarPautaInputData cadastrarPautaInputData = mock(CadastrarPautaInputData.class);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> pautaService.cadastrar(cadastrarPautaInputData));
+        when(constraintViolationSet.isEmpty()).thenReturn(false);
+        when(validator.validate(cadastrarPautaInputData)).thenReturn(constraintViolationSet);
+        Assertions.assertThrows(DadosDeCadastroInvalidosException.class, () -> pautaService.cadastrar(cadastrarPautaInputData));
     }
 
     @Test
@@ -82,8 +89,8 @@ public class PautaServiceTest {
         when(pautaRepository.save(any(Pauta.class))).thenReturn(new Pauta());
         when(pautaRepository.findById(1L)).thenReturn(Optional.of(
                 Pauta.builder()
-                .status(PautaStatus.NOVA)
-                .build()));
+                        .status(PautaStatus.NOVA)
+                        .build()));
 
         pautaService.abrirSessao(abrirSessaoInputData);
 
@@ -91,7 +98,7 @@ public class PautaServiceTest {
 
         Pauta pautaSalva = pautaArgumentCaptor.getValue();
 
-        Assertions.assertEquals(ABERTA, pautaSalva.getStatus());
+        assertEquals(ABERTA, pautaSalva.getStatus());
     }
 
     @Test
@@ -101,8 +108,8 @@ public class PautaServiceTest {
         when(abrirSessaoInputData.getPautaId()).thenReturn(1L);
         when(pautaRepository.findById(1L)).thenReturn(Optional.of(
                 Pauta.builder()
-                .status(PautaStatus.ABERTA)
-                .build()));
+                        .status(PautaStatus.ABERTA)
+                        .build()));
 
         Assertions.assertThrows(PautaNaoEhNovaException.class, () -> pautaService.abrirSessao(abrirSessaoInputData));
     }
@@ -118,7 +125,7 @@ public class PautaServiceTest {
 
         Pauta pautaSalva = pautaArgumentCaptor.getValue();
 
-        Assertions.assertEquals(FECHADA, pautaSalva.getStatus());
+        assertEquals(FECHADA, pautaSalva.getStatus());
         verify(encerrarPautaTopic).send(anyString());
     }
 }

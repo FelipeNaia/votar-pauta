@@ -1,5 +1,6 @@
 package com.br.naia.votarpauta.application.service.voto;
 
+import com.br.naia.votarpauta.application.exception.CpfInvalidoException;
 import com.br.naia.votarpauta.application.exception.CpfJaVotouException;
 import com.br.naia.votarpauta.application.exception.PautaNaoEncontradaException;
 import com.br.naia.votarpauta.application.exception.PautaNaoEstaAbertaParaVotoException;
@@ -58,7 +59,9 @@ public class VotoService {
             throw new CpfJaVotouException("Este CPJ já foi usado para votar nesta pauta!");
         }
 
-        userInfoIntegration.validarCPF(votarInputData.getCpf());
+        if(!userInfoIntegration.cpfEhValido(votarInputData.getCpf())) {
+            throw new CpfInvalidoException(String.format("O CPF %s não pode ser usado para votar", votarInputData.getCpf()));
+        }
     }
 
     private void validarPautaParaVotar(Pauta pauta) {
