@@ -20,7 +20,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorMessage> handleValidationExceptions(RuntimeException e) {
         log.error("Algo deu errado: ", e);
-        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.CONFLICT);
     }
 
     @AllArgsConstructor
