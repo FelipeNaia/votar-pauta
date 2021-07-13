@@ -16,31 +16,30 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "PAUTA", schema = "VOTAR_PAUTA")
-@SequenceGenerator(name = "SEQ_PAUTA", sequenceName = "VOTAR_PAUTA.SEQ_PAUTA", allocationSize = 1)
 public class Pauta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_PAUTA")
-    @Column(name = "pa_id")
+    @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pa_nome")
+    @Column(name = "NOME")
     private String nome;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "pa_status", length = 64)
+    @Column(name = "STATUS", length = 64)
     private PautaStatus status;
 
-    @Column(name = "pa_votos_sim")
+    @Column(name = "VOTOS_SIM")
     private Long votosSim;
 
-    @Column(name = "pa_votos_nao")
+    @Column(name = "VOTOS_NAO")
     private Long votosNao;
 
-    @Column(name = "pa_abertura")
+    @Column(name = "ABERTURA")
     private LocalDateTime abertura;
 
-    @Column(name = "pa_fechamento")
+    @Column(name = "FECHAMENTO")
     private LocalDateTime fechamento;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pauta")

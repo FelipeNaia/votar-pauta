@@ -2,16 +2,15 @@ package com.br.naia.votarpauta.application.service.pauta;
 
 import com.br.naia.votarpauta.application.exception.DadosDeCadastroInvalidosException;
 import com.br.naia.votarpauta.application.exception.PautaNaoEhNovaException;
-import com.br.naia.votarpauta.application.service.voto.VotoService;
-import com.br.naia.votarpauta.domain.pauta.PautaDTO;
-import com.br.naia.votarpauta.domain.pauta.Pauta;
-import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import com.br.naia.votarpauta.application.exception.PautaNaoEncontradaException;
-import com.br.naia.votarpauta.domain.pauta.PautaRepository;
 import com.br.naia.votarpauta.application.kafka.sender.PublicarResultadoDaPautaTopicSender;
+import com.br.naia.votarpauta.application.service.voto.VotoService;
+import com.br.naia.votarpauta.domain.pauta.Pauta;
+import com.br.naia.votarpauta.domain.pauta.PautaDTO;
+import com.br.naia.votarpauta.domain.pauta.PautaRepository;
+import com.br.naia.votarpauta.domain.pauta.PautaStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
