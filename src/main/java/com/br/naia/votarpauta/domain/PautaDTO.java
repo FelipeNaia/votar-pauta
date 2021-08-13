@@ -1,6 +1,5 @@
-package com.br.naia.votarpauta.domain.pauta;
+package com.br.naia.votarpauta.domain;
 
-import com.br.naia.votarpauta.domain.voto.VotoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PautaDTO {
-    private Long id;
+    private String id;
     private String nome;
     private PautaStatus status;
     private Long votosSim;

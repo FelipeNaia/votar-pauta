@@ -1,18 +1,19 @@
 package com.br.naia.votarpauta.entrypoint.voto;
 
+import com.br.naia.votarpauta.application.service.pauta.PautaService;
 import com.br.naia.votarpauta.application.service.voto.VotarInputData;
-import com.br.naia.votarpauta.application.service.voto.VotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/voto")
 public class VotoController {
     @Autowired
-    private VotoService votoService;
+    private PautaService pautaService;
 
     @PutMapping
-    public void votar(@RequestBody VotarInputData votarInputData){
-        votoService.votar(votarInputData);
+    public Mono<Void> votar(@RequestBody VotarInputData votarInputData){
+        return pautaService.votar(votarInputData);
     }
 }

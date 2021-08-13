@@ -1,4 +1,4 @@
-package com.br.naia.votarpauta.domain.pauta;
+package com.br.naia.votarpauta.domain;
 
 public enum PautaStatus{
     NOVA,

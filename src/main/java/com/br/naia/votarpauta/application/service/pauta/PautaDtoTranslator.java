@@ -1,8 +1,7 @@
 package com.br.naia.votarpauta.application.service.pauta;
 
-import com.br.naia.votarpauta.domain.pauta.PautaDTO;
-import com.br.naia.votarpauta.domain.pauta.Pauta;
-import org.springframework.stereotype.Component;
+import com.br.naia.votarpauta.domain.PautaDTO;
+import com.br.naia.votarpauta.domain.Pauta;
 
 public class PautaDtoTranslator {
 

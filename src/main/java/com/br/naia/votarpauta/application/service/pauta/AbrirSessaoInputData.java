@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AbrirSessaoInputData {
     private Long tempoEmMinutos;
-    private Long pautaId;
+    private String pautaId;
 }

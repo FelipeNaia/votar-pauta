@@ -1,4 +1,4 @@
-package com.br.naia.votarpauta.domain.voto;
+package com.br.naia.votarpauta.domain;
 
 public enum VotoValor{
     SIM, NAO

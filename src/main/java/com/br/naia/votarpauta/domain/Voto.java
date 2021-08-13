@@ -1,6 +1,5 @@
-package com.br.naia.votarpauta.domain.voto;
+package com.br.naia.votarpauta.domain;
 
-import com.br.naia.votarpauta.domain.pauta.Pauta;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
